@@ -14,5 +14,6 @@ def extract_frames(video_path, output_dir, frame_rate=1):
         count += 1
     cap.release()
 
-if __name__ == "__main__":
-    extract_frames("data/sample.mp4", "data/frames")
+
+extract_frames("data/sample.mp4", "data/frames")
+print ("OpenCV version:", cv2.__version__)
