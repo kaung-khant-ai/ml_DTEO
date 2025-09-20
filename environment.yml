@@ -1,0 +1,17 @@
+﻿name: deeptrust
+dependencies:
+  - python=3.10
+  - pytorch
+  - torchvision
+  - torchaudio
+  - scikit-learn
+  - opencv
+  - matplotlib
+  - jupyter
+  - pip
+  - pip:
+      - fastapi
+      - uvicorn
+      - tqdm
+      - moviepy
+      - gradio
