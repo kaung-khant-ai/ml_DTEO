@@ -1,0 +1,162 @@
+Documentation for scan_videos.py
+
+🎯 Purpose
+
+- This script scans through a folder of videos (real or AI-generated) and records important information about each video into a MASTER spreadsheet (called a “manifest”).
+
+- Think of it as a cataloguing tool.
+
+**Each video becomes one row in the manifest.**
+
+The "manifest" is just a CSV file (data/manifests/manifest.csv) that keeps track of all videos from different datasets in one place.
+
+📊 What information does it collect?
+
+For each video, it writes a row with:
+
+clip_id → short name for the video (usually the filename without extension)
+
+source → which dataset it came from (e.g., FF++, DFDC, Kinetics, or “custom”)
+
+subset → whether the video is for training, validation, or testing
+
+label → whether it’s real (human-recorded) or ai_generated
+
+subtype → more specific category (e.g., deepfake_face_swap, t2v_full_synthetic, recorded_human)
+
+duration_s → how long the video is (in seconds)
+
+fps → frames per second (how smooth the video is)
+
+width and height → resolution of the video (pixels)
+
+sha256 → a unique fingerprint (hash) of the file used to detect duplicates
+
+rel_path → the file path to the video
+
+notes → left blank for now (but can be used later for comments)
+
+🔑 Why do we need this?
+
+We are mixing different video datasets: some are real human recordings, others are deepfakes, and others are fully AI-generated videos.
+
+To train our AI model, we need one single organized list (the manifest) instead of dealing with scattered folders.
+
+The SHA-256 hash ensures that if the same video appears twice in different folders, it is only added once.
+
+This makes training cleaner, avoids duplicates, and ensures our dataset is balanced and traceable.
+
+⚙️ How it works (functions explained simply)
+
+ensure_header()
+
+Makes sure the manifest file exists and has the correct header row (column names).
+
+If the file doesn’t exist, it creates it.
+
+sha256sum()
+
+Calculates a digital fingerprint of the video file.
+
+This fingerprint is unique per file and helps detect duplicates.
+
+video_meta()
+
+Reads the video and extracts its metadata (fps, resolution, duration).
+
+If the video is broken or unreadable, it returns 0s.
+
+read_existing_hashes()
+
+Reads the manifest and remembers which videos are already listed.
+
+Ensures we don’t add the same video twice.
+
+iter_video_files()
+
+Searches through the given folder and finds all videos with extensions like .mp4, .avi, .mov, etc.
+
+build_rows()
+
+For each video found, builds a “row” with all required details (id, metadata, hash, etc.).
+
+append_rows()
+
+Adds these rows to the manifest file.
+
+If a video already exists (based on its hash), it skips it.
+
+main()
+
+This is the “manager” function. It runs everything in order:
+
+Check/create manifest file
+
+Read already existing video hashes
+
+Scan the folder for new videos
+
+Collect metadata for each new video
+
+Write them into the manifest
+
+Print a summary of what was added and what was skipped
+
+
+🖥️ How to run it (command lines)
+
+- You run this script from the terminal (PowerShell in VS Code). The format is:
+
+- python scripts\scan_videos.py <folder_to_scan> <source> <label> <subtype> <subset>
+
+
+. <folder_to_scan> → path to the folder containing your videos
+
+. <source> → short tag for where the videos came from (e.g., ffpp, dfdc, kinetics, t2v)
+
+. <label> → real or ai_generated
+
+. <subtype> → specific type (deepfake_face_swap, recorded_human, t2v_full_synthetic)
+
+. <subset> → which split this video belongs to (train, val, or test)
+
+✅ Examples:
+
+1. Deepfake clips (AI-generated)
+
+Command Line:
+
+python scripts\scan_videos.py data\raw\ffpp\manip ffpp ai_generated deepfake_face_swap train
+
+
+
+
+2. Fully synthetic AI videos (text-to-video models like Sora/Runway)
+
+Command Line: 
+
+python scripts\scan_videos.py data\external\curated_genai t2v ai_generated t2v_full_synthetic train
+
+
+3. Real human-recorded videos
+
+Command Line:
+
+python scripts\scan_videos.py data\raw\kinetics kinetics real recorded_human train
+
+
+After running, the script prints something like:
+
+[scan] Found=150 | New rows written=148 | Skipped as duplicates=2 | Manifest=data/manifests/manifest.csv
+
+📌 Key takeaways for non-technical readers
+
+- scan_videos.py is a video catalog builder.
+
+- It helps keep all real + AI videos in one master file.
+
+- It avoids duplicates and keeps useful metadata (length, resolution, fps).
+
+- Running it is as simple as one command with 5 arguments.
+
+- The output is always saved in data/manifests/manifest.csv.
