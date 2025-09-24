@@ -105,7 +105,7 @@ Print a summary of what was added and what was skipped
 
 🖥️ How to run it (command lines)
 
-- You run this script from the terminal (PowerShell in VS Code). The format is:
+You run this script from the terminal (PowerShell in VS Code). The format is:
 
 - python scripts\scan_videos.py <folder_to_scan> <source> <label> <subtype> <subset>
 
@@ -126,7 +126,7 @@ Print a summary of what was added and what was skipped
 
 Command Line:
 
-python scripts\scan_videos.py data\raw\ffpp\manip ffpp ai_generated deepfake_face_swap train
+- python feature\scan_videos.py data\raw\ffpp\manip ffpp ai_generated deepfake_face_swap train
 
 
 
@@ -135,14 +135,14 @@ python scripts\scan_videos.py data\raw\ffpp\manip ffpp ai_generated deepfake_fac
 
 Command Line: 
 
-python scripts\scan_videos.py data\external\curated_genai t2v ai_generated t2v_full_synthetic train
+- python data\feature\scan_videos.py data\external\curated_genai t2v ai_generated t2v_full_synthetic train
 
 
 3. Real human-recorded videos
 
 Command Line:
 
-python scripts\scan_videos.py data\raw\kinetics kinetics real recorded_human train
+- python data\feature\scan_videos.py data\raw\kinetics kinetics real recorded_human train
 
 
 After running, the script prints something like:

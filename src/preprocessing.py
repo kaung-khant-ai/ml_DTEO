@@ -16,4 +16,4 @@ def extract_frames(video_path, output_dir, frame_rate=1):
 
 
 extract_frames("data/sample.mp4", "data/frames")
-print ("OpenCV version:", cv2.__version__)
+#print ("OpenCV version:", cv2.__version__)
